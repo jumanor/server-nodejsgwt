@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script id='socketio'></script>
+<!--
+<script src="/socket.io/socket.io.js"></script>
+-->
+<script>
+$('#socketio').attr('src', location.protocol+"//"+location.host+"/socket.io/socket.io.js")
+var socket;
+var user;
+
+ window.onload = function() {
+
+  	//socket = io.connect('http://localhost:5099');
+  	socket = io.connect('ws://' + location.host+':8000');
+  	//socket = io.connect('ws://' + location.host);
+  
+	  socket.on('onChangeAllPositionUsers', function (data) {
+	    
+	    console.log("UPDATE POSITION"+data);
+	    
+	  });
+
+	  socket.on('onBeginPositionUser', function (data) {
+	    user=JSON.parse(data);
+	    console.log("BEGIN POSITION"+ data);
+	    
+	  });
+	  socket.on('onRemoveUser', function (data) {
+	    
+	    console.log("REMOVE USER"+ data);
+	
+	  });
+}
+
+function crear(){
+        user.x+=10;
+	user.y+=5;
+	socket.emit("onChangePositionUser",JSON.stringify(user));
+
+}
+</script>
+
+
+</head>
+<body>
+<h1>Habra un depurador Javascript<h1>
+<button onclick="crear()">emit onChangePositionUser()</button>
+</body>
+</html>
+
